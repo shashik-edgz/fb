@@ -9,10 +9,15 @@ $('.post').find('.interaction').find('.edit').on('click',function () {
 
     postBodyElement=event.target.parentNode.parentNode.childNodes[1];
     var postBody=event.target.parentNode.parentNode.childNodes[1].textContent;
-    postId =event.target.parentNode.parentNode.dataset['postid'];
+    postId =event.target.parentNode.parentNode.parentNode.parentNode.dataset['postid'];
+    console.log(postBodyElement);
+    console.log(postBody);
+    console.log(postId);
+
     $('#post-body').val(postBody);
    $('#edit-model').modal();
 });
+
 $('#modal-save').on('click',function () {
     $.ajax({
         method: 'POST',
@@ -30,7 +35,7 @@ $('#modal-save').on('click',function () {
 $('.like').on('click',function (event) {
 
     event.preventDefault();
-    postId =event.target.parentNode.parentNode.dataset['postid'];
+    postId =event.target.parentNode.parentNode.parentNode.parentNode.dataset['postid'];
 
     var isLike = event.target.previousElementSibling == null;
     $.ajax({
@@ -40,6 +45,8 @@ $('.like').on('click',function (event) {
     })
         .done(function () {
             event.target.innerText = isLike ? event.target.innerText == 'Like' ? 'You like this post' : 'Like' : event.target.innerText == 'Dislike' ? 'You don\'t like this post' : 'Dislike';
+            event.target.className =isLike ? event.target.className == 'like icon ion-android-favorite-outline' ? 'like icon ion-android-favorite' : 'like icon ion-android-favorite-outline' : event.target.innerText == 'Dislike' ? 'You don\'t like this post' : 'Dislike';
+
             if (isLike) {
                 event.target.nextElementSibling.innerText = 'Dislike';
             } else {

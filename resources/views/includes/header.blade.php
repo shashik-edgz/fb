@@ -18,8 +18,18 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 
                 <ul class="nav navbar-nav navbar-right">
+                    <li><a href="{{route('dashboard')}}">Home</a></li>
+                    @if(Auth::user() && Auth::user()->role)
+
+                        <li><a href="{{route('admin')}}">Admin</a></li>
+                    @endif
+                    @if(Auth::user())
+                    <li><a href="{{route('myacc')}}">{{Auth::user()->first_name}}</a></li>
+                    @endif
                     <li><a href="{{route('account')}}">Account</a></li>
+                    @if(Auth::user())
                     <li><a href="{{route('logout')}}">Logout</a></li></ul>
+                    @endif
             </div><!-- /.navbar-collapse -->
         </div><!-- /.container-fluid -->
     </nav>

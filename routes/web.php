@@ -74,4 +74,14 @@ Route::group(['middleware' => ['web']], function () {
         'uses'=>'PostController@postLikePost',
         'as'=>'like'
     ]);
+    Route::get('/admin',[
+        'uses'=>'UserController@adminPanel',
+        'as'=>'admin',
+        'middleware'=>'auth',
+
+    ]);
+    Route::get('/myacc',[
+       'uses'=>'UserController@myAccount',
+        'as'=>'myacc'
+    ]);
 });

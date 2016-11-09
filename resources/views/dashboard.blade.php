@@ -22,23 +22,33 @@
             <header><h3>What Other People Think</h3></header>
             @foreach($posts as $post)
                 <article class="post" data-postid="{{$post->id}}">
-                    <p>{{$post->body}}</p>
+                    <div id="art_id" class="thumbnail">
+                        <div class="caption">
+
+
+                        <p class="cap">{{$post->body}}</p>
+
+
+
+                    <div class="interaction">
+                        <a id="like_bar" href="#" class="like {{ Auth::user()->likes()->where('post_id', $post->id)->first() ? Auth::user()->likes()->where('post_id', $post->id)->first()->like == 1 ? 'icon ion-android-favorite' : 'icon ion-android-favorite-outline' : 'icon ion-android-favorite-outline'  }}">{{ Auth::user()->likes()->where('post_id', $post->id)->first() ? Auth::user()->likes()->where('post_id', $post->id)->first()->like == 1 ? 'You like this post' : 'Like' : 'Like'  }}</a>
+                     <!--   <a id="like_bar" href="#" class="like">{{ Auth::user()->likes()->where('post_id', $post->id)->first() ? Auth::user()->likes()->where('post_id', $post->id)->first()->like == 0 ? 'You Don\'t like this post' : 'Dislike' : 'Dislike'  }}</a> -->
+
+                        @if(Auth::user()==$post->user)
+
+                        <a id="like_bar" href="#" class="edit">Edit</a>
+                        <a id="like_bar" href="{{route('post.delete',['post_id'=>$post->id])}}">Delete</a>
+
+                        @endif
+
+                    </div>
                     <div class="info">
                         Posted by {{$post->user->first_name}} on {{$post->created_at}}
                     </div>
-                    <div class="interaction">
-                        <a href="#" class="like">{{ Auth::user()->likes()->where('post_id', $post->id)->first() ? Auth::user()->likes()->where('post_id', $post->id)->first()->like == 1 ? 'You like this post' : 'Like' : 'Like'  }}</a>|
-                        <a href="#" class="like">{{ Auth::user()->likes()->where('post_id', $post->id)->first() ? Auth::user()->likes()->where('post_id', $post->id)->first()->like == 0 ? 'You Don\'t like this post' : 'Dislike' : 'Dislike'  }}</a>|
-                        @if(Auth::user()==$post->user)
-                        <a href="#" class="edit">Edit</a>|
-                        <a href="{{route('post.delete',['post_id'=>$post->id])}}">Delete</a>
-
-                            @endif
+                        </div>
                     </div>
                 </article>
                 @endforeach
-
-
         </div>
     </section>
     <div class="modal fade" tabindex="-1" role="dialog" id="edit-model">

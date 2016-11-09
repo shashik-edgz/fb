@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Post;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Collection;
 
 
 
@@ -30,6 +32,7 @@ class UserController extends Controller
          $user->email=$email;
          $user->first_name = $first_name;
          $user->password = $password;
+         $user->role='0';
 
          $user->save();
 
@@ -73,9 +76,12 @@ class UserController extends Controller
          $user->first_name = $request['first_name'];
          $user->update();
          $file = $request->file('image');
-         $filename =$request['first_name'].'_'.$user->id.'.jpg';
+         $filename ='img'.$user->id.'.jpg';
          if ($file){
              Storage::disk('local')->put($filename,File::get($file));
+         }else
+         {
+
          }
 
          return redirect()->route('account');
@@ -85,6 +91,25 @@ class UserController extends Controller
      {
          $file = Storage::disk('local')->get($filename);
          return new Response($file, 200);
+     }
+
+     public function adminPanel()
+     {
+         if(!Auth::user()->role){
+            return redirect()->back();
+         }
+         $users = User::orderBy('created_at','asc')->get();
+
+         return view('admin', ['users' => $users]);
+
+     }
+
+     public function myAccount()
+     {
+         $user = Auth::user();
+         $posts =Auth::user()->posts()->get();
+         return view('myacc',['user'=>$user,'posts'=>$posts]);
+
      }
 
 }
